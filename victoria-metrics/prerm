@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e  # Exit on error
+
+case "$1" in
+    remove|deconfigure)
+        # Stopping the services before package removal or deconfiguration
+        for service in vmstorage vminsert vmselect; do
+            if systemctl is-active --quiet $service; then
+                echo "Stopping service $service..."
+                systemctl stop $service
+            fi
+        done
+        ;;
+    upgrade)
+        ;;
+    failed-upgrade)
+        ;;
+esac
+
+exit 0

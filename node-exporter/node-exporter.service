@@ -1,0 +1,18 @@
+[Unit]
+Description=Prometheus exporter for machine metrics
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+User=node-exporter
+Group=node-exporter
+Restart=on-failure
+EnvironmentFile=-/etc/default/node-exporter
+ExecStart=/usr/bin/node-exporter $NODE_EXPORTER_ARGS
+ExecReload=/bin/kill -HUP $MAINPID
+NoNewPrivileges=true
+ProtectHome=read-only
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target

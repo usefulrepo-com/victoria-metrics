@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e  # Exit on error
+
+case "$1" in
+    remove|deconfigure)
+        # Stopping the services before package removal or deconfiguration
+        if systemctl is-active --quiet node-exporter; then
+            echo "Stopping service node-exporter..."
+            systemctl stop node-exporter.service
+        fi
+        ;;
+    upgrade)
+        if systemctl is-active --quiet node-exporter; then
+            echo "Restarting service node-exporter..."
+            systemctl restart node-exporter.service
+        fi
+        ;;
+    failed-upgrade)
+        ;;
+esac
+
+exit 0

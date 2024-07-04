@@ -1,0 +1,7 @@
+# VictoriaMetrics expands environment variables in command-line flags using the %{ENV_VAR} syntax at startup,
+# including nested variables. All related variables must start with the "VM_" prefix. For example,
+# -metricsAuthKey=%{VM_METRICS_AUTH_KEY} will use the value set for VM_METRICS_AUTH_KEY, and nested references
+# like VM_FOO=%{VM_BAR} are resolved accordingly.
+
+# This is an additional service command line args
+ARGS=""

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e  # Exit on error
+
+# Define the system user name
+SYS_USER="victoria-metrics"
+
+case "$1" in
+    purge)
+        if getent passwd $SYS_USER >/dev/null; then
+            echo "Removing user $SYS_USER."
+            userdel $SYS_USER
+        fi
+        if getent group $SYS_USER >/dev/null; then
+            echo "Removing group $SYS_USER."
+            groupdel $SYS_USER
+        fi
+        if test -d /var/lib/$SYS_USER; then
+          echo "Purging path /var/lib/$SYS_USER"
+          rm -fr /var/lib/$SYS_USER
+        fi
+        ;;
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+        # Actions for package removal or upgrade (not full purge)
+        ;;
+esac
+
+systemctl daemon-reload
+
+exit 0

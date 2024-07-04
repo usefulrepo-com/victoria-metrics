@@ -1,0 +1,26 @@
+[Unit]
+Description=VictoriaMetrics Insert service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/vminsert -envflag.enable=true -envflag.prefix=VM_ $ARGS
+ExecReload=/bin/kill -HUP $MAINPID
+EnvironmentFile=/etc/default/vminsert
+User=victoria-metrics
+Group=victoria-metrics
+WorkingDirectory=/var/lib/victoria-metrics
+
+RuntimeDirectory=victoria-metrics
+StateDirectory=victoria-metrics
+PIDFile=/run/victoria-metrics/vminsert.pid
+StartLimitBurst=5
+StartLimitInterval=0
+Restart=on-failure
+RestartSec=1
+
+StateDirectoryMode=0750
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
