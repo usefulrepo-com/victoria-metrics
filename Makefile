@@ -4,7 +4,6 @@ ROOTDIR = $(shell aptly config show | jq -r '.FileSystemPublishEndpoints.repo.ro
 all:
 	bazel build //...
 	rm -fr debs
-	#aptly repo remove victoria-metrics-cluster victoria-metrics-cluster || true
 	mkdir -p debs
 	cp -fa bazel-bin/victoria-metrics/victoria-metrics-cluster_*.deb debs
 	cp -fa bazel-bin/node-exporter/node-exporter_*.deb debs
