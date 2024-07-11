@@ -4,27 +4,40 @@ load("@rules_pkg//pkg:pkg.bzl", "pkg_deb", "pkg_tar")
 
 def build_prometheus(version, arch):
     target = "prometheus_{}_{}".format(version.replace(".", "_"), arch)
+    
+    existing_binaries = [
+        "@{}//:{}".format(target, binary)
+        for binary in binaries
+        if native.existing_rule("@{}//:{}".format(target, binary))
+    ]
+    
+    remap_paths = {
+        "/prometheus.service": "/lib/systemd/system/prometheus.service",
+        "/prometheus.defaults": "/etc/default/prometheus",
+    }
+    
+    for binary in binaries:
+        if "@{}//:{}".format(target, binary) in existing_binaries:
+            remap_paths["/" + binary] = "/usr/bin/" + binary
+    
+    modes = {
+        "/lib/systemd/system/prometheus.service": "0644",
+        "/etc/default/prometheus": "0640",
+    }
+    
+    for binary in binaries:
+        if "@{}//:{}".format(target, binary) in existing_binaries:
+            modes["/usr/bin/" + binary] = "0755"
+
     pkg_tar(
         name="content_{}".format(target),
-        srcs=[
-            "@{}//:prometheus".format(target),
-            "@{}//:promtool".format(target),
+        srcs=existing_binaries + [
             ":prometheus.service",
             ":prometheus.defaults",
         ],
-        remap_paths={
-            "/prometheus.service": "/lib/systemd/system/prometheus.service",
-            "/prometheus.defaults": "/etc/default/prometheus",
-            "/prometheus": "/usr/bin/prometheus",
-            "/promtool": "/usr/bin/promtool",
-        },
+        remap_paths=remap_paths,
         owner="0.0",
-        modes={
-            "/usr/bin/prometheus": "0755",
-            "/usr/bin/promtool": "0755",
-            "/lib/systemd/system/prometheus.service": "0644",
-            "/etc/default/prometheus": "0640",
-        },
+        modes=modes,
         mode="0755",
         package_dir="/",
     )
