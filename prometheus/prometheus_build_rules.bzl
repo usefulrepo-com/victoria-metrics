@@ -4,7 +4,7 @@ load("@rules_pkg//pkg:pkg.bzl", "pkg_deb", "pkg_tar")
 
 def build_prometheus(version, arch):
     target = "prometheus_{}_{}".format(version.replace(".", "_"), arch)
-    binaries = ["prometheus", "promtool", "tsdb"]
+    binaries = ["promtool", "tsdb"]
 
     existing_binaries = [
         "@{}//:{}".format(target, binary)
@@ -13,6 +13,7 @@ def build_prometheus(version, arch):
     ]
     
     remap_paths = {
+        "@{}//:prometheus".format(target): "/usr/bin/prometheus"
         "/prometheus.service": "/lib/systemd/system/prometheus.service",
         "/prometheus.defaults": "/etc/default/prometheus",
     }
