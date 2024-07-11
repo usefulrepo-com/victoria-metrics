@@ -13,7 +13,7 @@ def build_prometheus(version, arch):
     ]
     
     remap_paths = {
-        "@{}//:prometheus".format(target): "/usr/bin/prometheus"
+        "@{}//:prometheus".format(target): "/usr/bin/prometheus",
         "/prometheus.service": "/lib/systemd/system/prometheus.service",
         "/prometheus.defaults": "/etc/default/prometheus",
     }
