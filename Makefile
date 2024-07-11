@@ -11,4 +11,3 @@ all:
 	aptly publish drop any filesystem:repo:victoria-metrics-cluster || true
 	aptly publish snapshot snapshot-$(SNAPSHOT) filesystem:repo:victoria-metrics-cluster
 	python3 autoindex.py $(ROOTDIR)/victoria-metrics-cluster
-

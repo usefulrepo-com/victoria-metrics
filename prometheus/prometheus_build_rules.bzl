@@ -8,6 +8,7 @@ def build_prometheus(version, arch):
         name="content_{}".format(target),
         srcs=[
             "@{}//:prometheus".format(target),
+            "@{}//:promtool".format(target),
             ":prometheus.service",
             ":prometheus.defaults",
         ],
@@ -15,10 +16,12 @@ def build_prometheus(version, arch):
             "/prometheus.service": "/lib/systemd/system/prometheus.service",
             "/prometheus.defaults": "/etc/default/prometheus",
             "/prometheus": "/usr/bin/prometheus",
+            "/promtool": "/usr/bin/promtool",
         },
         owner="0.0",
         modes={
             "/usr/bin/prometheus": "0755",
+            "/usr/bin/promtool": "0755",
             "/lib/systemd/system/prometheus.service": "0644",
             "/etc/default/prometheus": "0640",
         },
