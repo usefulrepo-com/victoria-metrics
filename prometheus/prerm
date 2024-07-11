@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e  # Exit on error
+
+case "$1" in
+    remove|deconfigure)
+        # Stopping the services before package removal or deconfiguration
+        if systemctl is-active --quiet prometheus; then
+            echo "Stopping service prometheus..."
+            systemctl stop prometheus.service
+        fi
+        ;;
+    upgrade)
+        if systemctl is-active --quiet prometheus; then
+            echo "Restarting service prometheus..."
+            systemctl restart prometheus.service
+        fi
+        ;;
+    failed-upgrade)
+        ;;
+esac
+
+exit 0

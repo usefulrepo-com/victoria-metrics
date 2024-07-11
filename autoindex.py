@@ -99,7 +99,7 @@ SCRIPTS = """
 \t\t\tvar day = date.getUTCDate();
 \t\t\tvar month = date.getUTCMonth() + 1;
 \t\t\tvar year = date.getUTCFullYear();
-\t\t\tif (secondsPast < 31536000) { return day + '-' + month; } else { return day + '-' + month + '-' + year; }
+\t\t\tif (secondsPast < 31536000) { return day + '.' + month; } else { return day + '-' + month + '-' + year; }
 \t\t}
 \t}
 \tArray.prototype.forEach.call(
