@@ -11,7 +11,7 @@ def build_prometheus(version, arch):
         for binary in binaries
         if native.existing_rule("@{}//:{}".format(target, binary))
     ]
-    
+
     remap_paths = {
         "@{}//:prometheus".format(target): "/usr/bin/prometheus",
         "/prometheus.service": "/lib/systemd/system/prometheus.service",
