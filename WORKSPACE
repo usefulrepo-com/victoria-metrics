@@ -77,6 +77,8 @@ load_node_exporter("1.8.0", "amd64")
 load_node_exporter("1.8.0", "arm64")
 load_node_exporter("1.8.1", "amd64")
 load_node_exporter("1.8.1", "arm64")
+load_node_exporter("1.8.2", "amd64")
+load_node_exporter("1.8.2", "arm64")
 
 load("//prometheus:prometheus_archive.bzl", "load_prometheus")
 
